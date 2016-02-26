@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+'use strict';
 
 // constants
 var CN = 'davup';
@@ -7,21 +7,15 @@ var DOT = "\u2022";
 var UTF8 = 'utf8';
 var VERSION = '0.0.1';
 
-// used for color and formatting of text in the console
+
 var chalk = require( 'chalk' );
-// best file watcher for node - this is what gulp uses as well
 var chokidar = require( 'chokidar' );
-// node's file system class
 var fs = require( 'fs' );
-// form UI in the console
 var inquirer = require( 'inquirer' );
-// enables ability to start and manage child processes (such as duck)
 var childProcess = require( 'child_process' );
-// a stack of child processes for cleanup
+
 var childProcesses = [];
-// instance of chokidar
 var watcher;
-// the latest spawned child process for duck cli
 var duck;
 
 // objects
