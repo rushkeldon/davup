@@ -1,13 +1,14 @@
 {
   "name": "davup",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "GPL-3.0",
   "description": "Watches a local directory and uploads changes via webdav to a remote directory.",
   "main": "index.js",
   "dependencies": {
     "inquirer": "^0.12.0",
     "chalk": "^1.1.1",
-    "chokidar": "^1.4.2"
+    "chokidar": "^1.4.2",
+    "q": "^1.4.1"
   },
   "devDependencies": {},
   "scripts": {

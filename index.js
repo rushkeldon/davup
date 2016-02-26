@@ -5,7 +5,6 @@ var CN = 'davup';
 var CONFIG_FILE_PATH = __dirname + "/config.dat";
 var DOT = "\u2022";
 var UTF8 = 'utf8';
-var VERSION = '0.0.1';
 
 
 var chalk = require( 'chalk' );
@@ -13,6 +12,9 @@ var chokidar = require( 'chokidar' );
 var fs = require( 'fs' );
 var inquirer = require( 'inquirer' );
 var childProcess = require( 'child_process' );
+var pkgData = require( './package.json' );
+var q = require( 'q' );
+var deferred = null;
 
 var childProcesses = [];
 var watcher;
@@ -78,6 +80,8 @@ var flags = {
 function init( argsArray ) {
 	// console.log( CN + ".init" );
 
+	deferred = q.defer();
+
 	// processArgs sets shouldResetConfig
 	processArgs( argsArray );
 
@@ -100,6 +104,8 @@ function init( argsArray ) {
 			getConfigDataFromUser();
 		}
 	}
+
+	return deferred.promise;
 }
 
 function processArgs( args ){
@@ -191,7 +197,7 @@ function processArgs( args ){
 }
 
 function displayVersion(){
-	console.log( chalk.yellow( '  ' + CN + ' ' + VERSION ) );
+	console.log( chalk.yellow( '  ' + CN + ' ' + pkg.version ) );
 	process.exit( 0 );
 }
 
@@ -259,6 +265,10 @@ function cleanup( exitType ) {
 				}
 			} );
 		}
+	}
+
+	if( deferred ){
+		deferred.reject( new Error( CN + " has exited without fulfilling it's promise.  Quite disappointing." ) );
 	}
 }
 
@@ -424,6 +434,11 @@ function startWatching() {
 	};
 	watcher = chokidar.watch( configData.localDir, optionsWatch );
 	watcher.on( 'ready', watcherReady );
+
+	if( deferred ){
+		deferred.resolve( configData );
+		deferred = null;
+	}
 }
 
 function watcherReady() {
@@ -627,6 +642,6 @@ function stop(){
 module.exports = {
 	start : init,
 	help : displayHelp,
-	version : displayVersion,
+	ver : displayVersion,
 	stop : stop
 };
