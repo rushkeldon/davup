@@ -1,6 +1,6 @@
 # davup
 
-> Watches a local directory ( via [chokidar](https://github.com/paulmillr/chokidar) )and uploads changes via webdav ( ala [cyberduck cli](https://trac.cyberduck.io/wiki/help/en/howto/cli) )to a remote directory
+> Watches a local directory ( via [chokidar](https://github.com/paulmillr/chokidar) ) and uploads changes using webdav ( ala [cyberduck cli](https://trac.cyberduck.io/wiki/help/en/howto/cli) ) to a remote directory
 
 [![NPM](https://nodei.co/npm-dl/davup.png)](https://nodei.co/npm/davup/)
 [![NPM](https://nodei.co/npm/davup.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/davup/)
@@ -10,10 +10,6 @@
 
 * Tired of running Eclipse just so that Demandware cartridge changes would be uploaded via webdav
 * Wanted to integrate webdav upload into projects' gulp tasks
-
-## How?
-
-
 
 ## Getting started
 
@@ -42,12 +38,18 @@ var options = {
 var davupPromise = davup.start( options )
     .then(
         function davupStarted( configData ) {
-            // success code here
+            /* • success code here
+               • configData is the current config info being used
+                 either from saved 'config.dat' file, from options sent as shown here,
+                 or the config data will be prompted for in the terminal
+                 NOTE : password is not saved to file, but can be hand edited ( safety 3rd!! )
+            */
         },
         function davupFailed( err ) {
             console.log( err.toString() );
             // failure code here
     } );
-
+    
+// when you want to quit nicely
 davup.stop();
 ```
