@@ -57,12 +57,29 @@ var fsEvents = {
 	unlinkDir : "unlinkDir"
 };
 
-// init kicks things off - called at the bottom of the file
-function init() {
+var flags = {
+	h : '-h',
+	help : '-help',
+	l : '-l',
+	local : '-local',
+	p : '-p',
+	pass : '-pass',
+	r : '-r',
+	remote : '-remote',
+	R : '-R',
+	reset : '-reset',
+	u : '-u',
+	user : '-user',
+	v : '-v',
+	version : '-version'
+};
+
+// init kicks things off
+function init( argsArray ) {
 	// console.log( CN + ".init" );
 
 	// processArgs sets shouldResetConfig
-	processArgs();
+	processArgs( argsArray );
 
 	addEventListeners();
 
@@ -85,74 +102,100 @@ function init() {
 	}
 }
 
-function processArgs(){
+function processArgs( args ){
 	// console.log( CN + ".processArgs" );
 
-	var args = process.argv;
-	var i, arg;
-	var flags = {
-		h : '-h',
-		help : '-help',
-		l : '-l',
-		local : '-local',
-		p : '-p',
-		pass : '-pass',
-		r : '-r',
-		remote : '-remote',
-		R : '-R',
-		reset : '-reset',
-		u : '-u',
-		user : '-user',
-		v : '-v',
-		version : '-version'
-	};
+	var shouldProcessAsArray = false;
 
-	for( i=2; i<args.length; i++ ){
-		arg = args[ i ];
-		switch( arg ){
-			case flags.reset :
-			case flags.R :
-				shouldResetConfig = true;
-				break;
-			case flags.user :
-			case flags.u :
-				newConfigDataFromArgs.username = args[ ++i ];
-				break;
-			case flags.pass :
-			case flags.p :
-				password = args[ ++i ];
-				newConfigDataFromArgs.password = password;
-				break;
-			case flags.local :
-			case flags.l :
-				newConfigDataFromArgs.localDir = args[ ++i ];
-				break;
-			case flags.remote :
-			case flags.r :
-				newConfigDataFromArgs.remoteDir = "davs://" + args[ ++i ];
-				break;
-			case flags.help :
-			case flags.h :
-				displayHelp( flags );
-				process.exit( 0 );
-				break;
-			case flags.version :
-			case flags.v :
-				console.log( chalk.yellow( '  ' + CN + ' ' + VERSION ) );
-				process.exit( 0 );
-				break;
+	switch( true ){
+		case ( trueTypeOf( args ) === 'array' ) :
+			// noop - drop on through
+			shouldProcessAsArray = true;
+			break;
+		case ( !args && trueTypeOf( process.argv ) === 'array' ) :
+			// must have been run from cli?
+			shouldProcessAsArray = true;
+			args = process.argv;
+			break;
+		case ( trueTypeOf( args ) === 'object' && Object.keys( args ).length ) :
+			newConfigDataFromArgs = args;
+			break;
+		default :
+			// nothing to process
+			return;
+			break;
+	}
+
+	var i, arg;
+
+	if( shouldProcessAsArray ){
+		for( i=0; i<args.length; i++ ){
+			arg = args[ i ];
+			switch( arg ){
+				case flags.reset :
+				case flags.R :
+					shouldResetConfig = true;
+					break;
+				case flags.user :
+				case flags.u :
+					newConfigDataFromArgs.username = args[ ++i ];
+					break;
+				case flags.pass :
+				case flags.p :
+					password = args[ ++i ];
+					newConfigDataFromArgs.password = password;
+					break;
+				case flags.local :
+				case flags.l :
+					newConfigDataFromArgs.localDir = args[ ++i ];
+					break;
+				case flags.remote :
+				case flags.r :
+					newConfigDataFromArgs.remoteDir = "davs://" + args[ ++i ];
+					break;
+				case flags.help :
+				case flags.h :
+					displayHelp();
+					return;
+					break;
+				case flags.version :
+				case flags.v :
+					displayVersion();
+					return;
+					break;
+			}
 		}
+	} else {
+		// normalize data a bit
+		if( newConfigDataFromArgs.hasOwnProperty( 'password' ) ){
+			password = newConfigDataFromArgs.password;
+		}
+
+		if( newConfigDataFromArgs.hasOwnProperty( 'remoteDir' ) ){
+			newConfigDataFromArgs.remoteDir = "davs://" + newConfigDataFromArgs.remoteDir;
+		}
+
+		if( newConfigDataFromArgs.hasOwnProperty( 'shouldResetConfig' ) ){
+			shouldResetConfig = true;
+			delete newConfigDataFromArgs.shouldResetConfig;
+		}
+
 	}
 
 	if( Object.keys( newConfigDataFromArgs ).length ){
 		console.log( chalk.yellow( 'we have newConfigDataFromArgs :' ) );
 		console.log( chalk.magenta( JSON.stringify( newConfigDataFromArgs, null, 2 ) ) );
 	} else {
-		// console.log( 'there are no newConfigDataFromArgs' );
+		console.log( 'there are no newConfigDataFromArgs' );
 	}
 }
 
-function displayHelp( flags ){
+function displayVersion(){
+	console.log( chalk.yellow( '  ' + CN + ' ' + VERSION ) );
+	process.exit( 0 );
+}
+
+function displayHelp(){
 	// console.log( CN + ".displayHelp" );
 
 	var tab = '         ';
@@ -174,6 +217,7 @@ function displayHelp( flags ){
 		chalk.red( 'NOTE : Demandware users - there is no automatic' + indent + 'flattening of cartridges.' + indent + chalk.red.bold( 'Nested cartridges BAD!!' ) ) );
 
 	console.log( chalk.yellow( msg ) );
+	process.exit( 0 );
 }
 
 function addEventListeners() {
@@ -551,6 +595,10 @@ function webDav( localPath, remotePath, simpleName, eventType, traceToggle ) {
 	} );
 }
 
+function trueTypeOf(o) {
+	return (({}).toString.call(o).match(/\s([a-zA-Z]+)/)[1].toLowerCase());
+};
+
 function timestamp( isDateRequested ) {
 	var stamp = "";
 	var now = new Date();
@@ -572,5 +620,13 @@ function timestamp( isDateRequested ) {
 	return stamp;
 }
 
+function stop(){
+	process.exit( 0 );
+}
 
-init();
+module.exports = {
+	start : init,
+	help : displayHelp,
+	version : displayVersion,
+	stop : stop
+};
