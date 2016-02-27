@@ -26,30 +26,31 @@
 #### Then `require` and use it in your code :
 
 ```javascript
-var davup = require( 'davup' );
+    // example of an options object you can (optionally) pass to davup.start
+    var options = {
+     "username": "devgod",
+     "localDir": "/full/local/path/to/dir/to/watch/",
+     "remoteDir": "domain.com/full/path/to/dir/upload/to/",
+     "password": "secretwerd"
+    };
 
-var options = {
- "username": "devgod",
- "localDir": "/full/local/path/to/dir/to/watch/",
- "remoteDir": "domain.com/full/path/to/dir/upload/to/",
- "password": "secretwerd"
-};
+```
+Here is an example of a gulpfile ( in Coffeescript ) using davup
 
-var davupPromise = davup.start( options )
-    .then(
-        function davupStarted( configData ) {
-            /* • success code here
-               • configData is the current config info being used
-                 either from saved 'config.dat' file, from options sent as shown here,
-                 or the config data will be prompted for in the terminal
-                 NOTE : password is not saved to file, but can be hand edited ( safety 3rd!! )
-            */
-        },
-        function davupFailed( err ) {
-            console.log( err.toString() );
-            // failure code here
-    } );
-    
-// when you want to quit nicely
-davup.stop();
+```coffeescript
+g = require 'gulp'
+davup = require 'davup'
+runSequence = require 'run-sequence'
+
+g.task 'startdav', ->
+    # you can pass an options argument to start to create or overwrite the config.dat file
+    # otherwise you will be prompted for config data
+    return davup.start()
+
+g.task 'build-all', ( callback ) ->
+    runSequence 'stylus', 'coffee-modules', 'coffee-services', callback
+
+g.task 'default', ( callback ) ->
+    runSequence 'startdav', 'build-all', 'watch', callback
+
 ```

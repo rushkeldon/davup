@@ -15,6 +15,7 @@ var childProcess = require( 'child_process' );
 var pkgData = require( './package.json' );
 var q = require( 'q' );
 var deferred = null;
+var hasPromiseBeenResolved = false;
 
 var childProcesses = [];
 var watcher;
@@ -90,7 +91,6 @@ function init( argsArray ) {
 	if( shouldResetConfig ) {
 		resetConfigData();
 		getConfigDataFromUser();
-		return;
 	} else {
 		try {
 			if( fs.lstatSync( CONFIG_FILE_PATH ).isFile() ) {
@@ -106,6 +106,19 @@ function init( argsArray ) {
 	}
 
 	return deferred.promise;
+}
+
+function resolvePromise(){
+	if( deferred ){
+		deferred.resolve( configData );
+	}
+	hasPromiseBeenResolved = true;
+}
+
+function rejectPromise(){
+	if( deferred ){
+		deferred.reject( new Error( CN + " has exited without fulfilling it's promise.  Quite disappointing." ) );
+	}
 }
 
 function processArgs( args ){
@@ -192,7 +205,7 @@ function processArgs( args ){
 		console.log( chalk.yellow( 'we have newConfigDataFromArgs :' ) );
 		console.log( chalk.magenta( JSON.stringify( newConfigDataFromArgs, null, 2 ) ) );
 	} else {
-		console.log( 'there are no newConfigDataFromArgs' );
+		// console.log( 'there are no newConfigDataFromArgs' );
 	}
 }
 
@@ -267,8 +280,8 @@ function cleanup( exitType ) {
 		}
 	}
 
-	if( deferred ){
-		deferred.reject( new Error( CN + " has exited without fulfilling it's promise.  Quite disappointing." ) );
+	if( !hasPromiseBeenResolved ){
+		rejectPromise();
 	}
 }
 
@@ -282,13 +295,13 @@ function resetConfigData(){
 function readConfigFile() {
 	// console.log( CN + ".readConfigFile" );
 
-	configData = null;
+	configData = {};
 
 	try {
 		configData = JSON.parse( fs.readFileSync( CONFIG_FILE_PATH, UTF8 ) );
 	} catch( error ) {
-		console.log( error.toString() );
-		// file didn't exist - get answers then write file - which will send us back to readConfigFile !! RE-ENTRANT !!
+		// console.log( error.toString() );
+		configData = {};
 		getConfigDataFromUser();
 		return;
 	}
@@ -434,11 +447,6 @@ function startWatching() {
 	};
 	watcher = chokidar.watch( configData.localDir, optionsWatch );
 	watcher.on( 'ready', watcherReady );
-
-	if( deferred ){
-		deferred.resolve( configData );
-		deferred = null;
-	}
 }
 
 function watcherReady() {
@@ -446,6 +454,8 @@ function watcherReady() {
 	console.log( chalk.green( "changes will be uploaded / synced to remoteDir :\n  " + configData.remoteDir ) );
 	console.log( chalk.green( "username :\n  " + configData.username ) );
 	watcher.on( 'all', fileEventReceived );
+
+	resolvePromise();
 }
 
 function trace( msg, toggle ) {
@@ -592,10 +602,10 @@ function webDav( localPath, remotePath, simpleName, eventType, traceToggle ) {
 		}
 	}
 	/*
-	function stdErrReceived( data ){
-		duckLastStdErr = data.toString();
-	}
-	*/
+	 function stdErrReceived( data ){
+	 duckLastStdErr = data.toString();
+	 }
+	 */
 	duck.stdout.on( stdEvents.DATA, stdOutReceived );
 	// duck.stderr.on( stdEvents.DATA, stdErrReceived );
 
