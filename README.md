@@ -1,5 +1,5 @@
 <h1>
-    <span>style="float: left;">davup</span>
+    <span style="float: left;">davup</span>
     <a style="float: right;" href="https://nodei.co/npm/davup/">
         <img src="https://nodei.co/npm/davup.png?downloads=true&downloadRank=true&stars=true"
              alt="NPM"
