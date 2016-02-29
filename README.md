@@ -1,9 +1,6 @@
-# davup
+# davup  [![NPM](https://nodei.co/npm/davup.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/davup/)
 
 > Watches a local directory ( via [chokidar](https://github.com/paulmillr/chokidar) ) and uploads changes using webdav ( ala [cyberduck cli](https://trac.cyberduck.io/wiki/help/en/howto/cli) ) to a remote directory
-
-[![NPM](https://nodei.co/npm/davup.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/davup/)
-
 
 ## Why?
 
