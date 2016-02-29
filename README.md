@@ -1,20 +1,7 @@
-<table width="100%" border="0" cellpadding="0">
-    <tr>
-        <td width="65%" border="0" align="left">
-            <h1>davup</h1>
-        </td>
-        <td width="50%" border="0" align="right">
-            <a href="https://nodei.co/npm/davup/">
-                <img src="https://nodei.co/npm/davup.png?downloads=true&downloadRank=true&stars=true"
-                     alt="NPM"
-                     data-canonical-src="https://nodei.co/npm/davup.png?downloads=true&downloadRank=true&stars=true"
-                     style="max-width:100%;">
-            </a>
-        </td>
-    </tr>
-</table>
+# davup    [![NPM](https://nodei.co/npm/davup.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/davup/)
 
-> Watches a local directory ( via [chokidar](https://github.com/paulmillr/chokidar) ) and uploads changes using webdav ( ala [cyberduck cli](https://trac.cyberduck.io/wiki/help/en/howto/cli) ) to a remote directory
+#### Watches a local directory ( via [chokidar](https://github.com/paulmillr/chokidar) ) and uploads changes using webdav ( ala [cyberduck cli](https://trac.cyberduck.io/wiki/help/en/howto/cli) ) to a remote directory
+
 
 ## Why?
 
