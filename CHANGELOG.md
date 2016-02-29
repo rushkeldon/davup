@@ -1,7 +1,4 @@
-#### davup 0.0.5 (28 Feb 2016)
-* a little more readme love - bump!
-
-#### davup 0.0.4 (28 Feb 2016)
+#### davup 0.0.4, 0.0.5, 0.0.6 (28 Feb 2016)
 * spruced up readme - kind of annoying to have to bump version for a readme change!
 
 #### davup 0.0.3 (26 Feb 2016)
