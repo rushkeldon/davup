@@ -35,7 +35,10 @@
     };
 
 ```
-Here is an example of a gulpfile ( in Coffeescript ) using davup
+Here is an example of a gulpfile ( in Coffeescript ) using davup.
+This example also uses [run-sequence](https://github.com/OverZealous/run-sequence) which is quite handy for waiting until the davup promise is resolved before continuing with your build process.
+Apparently gulp 4.0 will support synchronous blocking tasks without the need for awesomeness like run-sequence.
+NOTE : Without some sort of blocking help such as run-sequence the input via terminal looks pretty funky in a gulp environment - but does work.
 
 ```coffeescript
 g = require 'gulp'
