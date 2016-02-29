@@ -1,14 +1,18 @@
-<h1>
-    <div style="display: inline-block; float: left; max-width: 50%;">davup</div>
-    <div style="display: inline-block; float: right; max-width: 50%; text-align: right;"
-        <a href="https://nodei.co/npm/davup/">
-            <img src="https://nodei.co/npm/davup.png?downloads=true&downloadRank=true&stars=true"
-                 alt="NPM"
-                 data-canonical-src="https://nodei.co/npm/davup.png?downloads=true&downloadRank=true&stars=true"
-                 style="max-width:100%;">
-        </a>
-    </div>
-</h1>
+<table>
+    <tr>
+        <td>
+            <h1>davup</h1>
+        </td>
+        <td style="width: 50%; text-align: right;">
+            <a href="https://nodei.co/npm/davup/">
+                <img src="https://nodei.co/npm/davup.png?downloads=true&downloadRank=true&stars=true"
+                     alt="NPM"
+                     data-canonical-src="https://nodei.co/npm/davup.png?downloads=true&downloadRank=true&stars=true"
+                     style="max-width:100%;">
+            </a>
+        </td>
+    </tr>
+</table>
 
 > Watches a local directory ( via [chokidar](https://github.com/paulmillr/chokidar) ) and uploads changes using webdav ( ala [cyberduck cli](https://trac.cyberduck.io/wiki/help/en/howto/cli) ) to a remote directory
 
