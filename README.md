@@ -1,6 +1,6 @@
 <table width="100%" border="0" cellpadding="0">
     <tr>
-        <td width="50%" border="0" align="left">
+        <td width="65%" border="0" align="left">
             <h1>davup</h1>
         </td>
         <td width="50%" border="0" align="right">
