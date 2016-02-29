@@ -1,6 +1,6 @@
 {
   "name": "davup",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "GPL-3.0",
   "description": "Watches a local directory and uploads changes via webdav to a remote directory.",
   "main": "index.js",
