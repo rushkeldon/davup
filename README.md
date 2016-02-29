@@ -1,9 +1,9 @@
-<table style="width: 100%; border-collapse: collapse; border: 0px solid white;">
+<table width="100%" border="0" cellpadding="0">
     <tr>
-        <td style="width: 50%; border: 0px solid white;">
+        <td width="50%" border="0" align="left">
             <h1>davup</h1>
         </td>
-        <td style="width: 50%; text-align: right; border: 0px solid white;">
+        <td width="50%" border="0" align="right">
             <a href="https://nodei.co/npm/davup/">
                 <img src="https://nodei.co/npm/davup.png?downloads=true&downloadRank=true&stars=true"
                      alt="NPM"
