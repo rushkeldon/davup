@@ -52,5 +52,15 @@ g.task 'build-all', ( callback ) ->
 
 g.task 'default', ( callback ) ->
     runSequence 'startdav', 'build-all', 'watch', callback
-
+    
 ```
+## Next Planned Features
+
+* Detect missing external dependency 'cyberduck cli' a.k.a. 'duck' and fail gracefully with information
+* Add facility to flag saving the password in config.dat - currently hand editing is the only mechanism
+
+
+## Possible Future Features
+
+* Replace cyberduck with suitable node-friendly option - not *totally* sure this would be worth the effort - interesting in hearing opinions
+* Demandware specific feature : ability to flatten cartridges if they are nested locally - again, only if there is enough interest
