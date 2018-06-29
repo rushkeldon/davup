@@ -581,7 +581,12 @@ function webDav( localPath, remotePath, simpleName, eventType, traceToggle ) {
 	var duckLastStdOut;
 	// var duckLastStdErr;
 	var mainProcess = process;
-	duck = spawn( 'duck', options );
+	try{
+		duck = spawn( 'duck', options );
+	} catch( error ){
+		console.log( chalk.red.bold( 'Missing Dependency : you need to install the duck cli from here : https://trac.cyberduck.io/wiki/help/en/howto/cli#Installation.  Exiting.' ) );
+		process.exit( 0 );
+	}
 
 	function stdOutReceived( data ) {
 		duckLastStdOut = data.toString();
